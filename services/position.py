@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload, load_only
 from sqlalchemy import desc
 import models as _mod
 from fastapi.encoders import jsonable_encoder
@@ -7,6 +7,15 @@ from fastapi.encoders import jsonable_encoder
 async def read(db: Session):
     return jsonable_encoder(
         db.query(_mod.Position)\
+        .options(
+            load_only(_mod.Position.name),
+            joinedload(_mod.Position.department)\
+            .options(
+                load_only(
+                    _mod.Department.id, _mod.Department.name
+                )
+            )
+        )\
         .order_by(desc(_mod.Position.id))\
         .all()
     )
@@ -15,6 +24,15 @@ async def read(db: Session):
 async def read_by_id(id: int, db: Session):
     return jsonable_encoder(
         db.query(_mod.Position)\
+        .options(
+            load_only(_mod.Position.name),
+            joinedload(_mod.Position.department)\
+            .options(
+                load_only(
+                    _mod.Department.id, _mod.Department.name
+                )
+            )
+        )\
         .filter(_mod.Position.id == id)\
         .first()
     )
