@@ -1,0 +1,1 @@
+from routers.department import router as department_router
