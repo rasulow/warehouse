@@ -1,3 +1,3 @@
-from models.models import Department
+from models.models import Department, Position
 
-from models.schemas import BaseSchema
+from models.schemas import BaseSchema, PositionSchema

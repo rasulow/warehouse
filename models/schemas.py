@@ -16,3 +16,16 @@ class BaseSchema(BaseModel):
     }
 
 
+class PositionSchema(BaseSchema):
+    department_id: int
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": 'IT',
+                    'department_id': 1
+                }
+            ]
+        }
+    }

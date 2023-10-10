@@ -1,37 +1,21 @@
 from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from core import get_db, Response
 import models as _mod
 import services as crud
 
 router = APIRouter(
-    prefix='/department',
-    tags=['Department']
+    prefix='/position',
+    tags=['Position']
 )
 
 
 @router.get('/', status_code=status.HTTP_200_OK)
-async def get_department(
+async def get_position(
         db: Session = Depends(get_db)):
     try:
-        result = await crud.department.read(db)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_204_NO_CONTENT,
-            detail=e
-        )
-
-    return Response.read(
-        data=result
-    )
-
-
-@router.get('/{id}/', status_code=status.HTTP_200_OK)
-async def get_current_department(
-        id: int,
-        db: Session = Depends(get_db)):
-    try:
-        result = await crud.department.read_by_id(id, db)
+        result = await crud.position.read(db)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -44,14 +28,14 @@ async def get_current_department(
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
-async def create_department(
-        req: _mod.BaseSchema,
+async def create_position(
+        req: _mod.PositionSchema,
         db: Session = Depends(get_db)):
     try:
-        result = await crud.department.create(req=req, db=db)
+        result = await crud.position.create(req, db)
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
 
@@ -60,16 +44,34 @@ async def create_department(
     )
 
 
-@router.put('/{id}/', status_code=status.HTTP_200_OK)
-async def update_department(
+
+@router.get('/{id}/', status_code=status.HTTP_200_OK)
+async def get_current_position(
         id: int,
-        req: _mod.BaseSchema,
         db: Session = Depends(get_db)):
     try:
-        result = await crud.department.update(id, req, db)
+        result = await crud.position.read_by_id(id, db)
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_204_NO_CONTENT,
+            detail=e
+        )
+
+    return Response.read(
+        data=result
+    )
+
+
+@router.put('/{id}/', status_code=status.HTTP_200_OK)
+async def update_position(
+        id: int,
+        req: _mod.PositionSchema,
+        db: Session = Depends(get_db)):
+    try:
+        result = await crud.position.update(id, req, db)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
 
@@ -79,14 +81,14 @@ async def update_department(
 
 
 @router.delete('/{id}/', status_code=status.HTTP_200_OK)
-async def delete_department(
+async def delete_position(
         id: int,
         db: Session = Depends(get_db)):
     try:
-        result = await crud.department.delete(id, db)
+        result = await crud.position.delete(id, db)
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
 

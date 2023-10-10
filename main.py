@@ -1,10 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Request, Response
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-from core import Base, engine, get_db
-import models as _mod
+from core import Base, engine, SessionLocal
 import routers
-
 
 app = FastAPI(
     swagger_ui_parameters={
@@ -13,10 +11,20 @@ app = FastAPI(
 )
 
 
+@app.middleware("http")
+async def db_session_middleware(request: Request, call_next):
+    response = Response("Internal server error", status_code=500)
+    try:
+        request.state.db = SessionLocal()
+        response = await call_next(request)
+    finally:
+        request.state.db.close()
+    return response
+
+
 origins = ["*"]
 methods = ["*"]
 headers = ["*"]
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,11 +36,10 @@ app.add_middleware(
 
 Base.metadata.create_all(engine)
 
-
 app.include_router(routers.department_router)
-
+app.include_router(routers.position_router)
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("main:app", host='127.0.0.1', port=8000, reload=True)
 
+    uvicorn.run("main:app", host='127.0.0.1', port=8000, reload=True)
