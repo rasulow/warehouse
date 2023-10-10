@@ -45,4 +45,4 @@ async def delete(id: int, db: Session):
         .filter(_mod.Department.id == id)\
         .delete(synchronize_session=False)
     db.commit()
-    return new_delete
+    return jsonable_encoder(new_delete)
