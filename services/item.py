@@ -23,7 +23,24 @@ async def read(is_retrieved: bool, db: Session):
     return jsonable_encoder(
         result
     )
+
     
+    
+async def read_by_id(id: int, db: Session):
+    return jsonable_encoder(
+        db.query(_mod.Item)
+        .options(
+            joinedload(_mod.Item.category)
+            .options(
+                load_only(
+                    _mod.Category.id,
+                    _mod.Category.name
+                )
+            )
+        )
+        .filter(_mod.Item.id == id)
+        .first()
+    )
     
 async def create(req: _mod.ItemSchema, db: Session):
     new_add = _mod.Item(**req.dict())

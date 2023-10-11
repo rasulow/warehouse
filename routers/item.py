@@ -43,6 +43,23 @@ async def create_item(
     )
     
     
+@router.get('/{id}/', status_code=status.HTTP_200_OK)
+async def get_item_by_id(
+    id: int,
+    db: Session = Depends(get_db)):    
+    try:
+        result = await crud.item.read_by_id(id, db)
+    except Exception as e:
+        return HTTPException(
+            status_code=status.HTTP_204_NO_CONTENT,
+            detail=e
+        )
+
+    return Response.read(
+        data=result
+    )
+
+    
 @router.put('/{id}/', status_code=status.HTTP_200_OK)
 async def update_item(
     id: int, 
