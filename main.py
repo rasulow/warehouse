@@ -38,6 +38,8 @@ Base.metadata.create_all(engine)
 
 app.include_router(routers.department_router)
 app.include_router(routers.position_router)
+app.include_router(routers.user_router)
+app.include_router(routers.category_router)
 
 if __name__ == '__main__':
     import uvicorn

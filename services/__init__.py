@@ -1,2 +1,1 @@
-from services import department
-from services import position
+from services import department, position, user, category

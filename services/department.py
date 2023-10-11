@@ -4,7 +4,6 @@ import models as _mod
 from fastapi.encoders import jsonable_encoder
 
 
-# noinspection PyTypeChecker
 async def read(db: Session):
     return jsonable_encoder(
         db.query(_mod.Department) \

@@ -12,6 +12,7 @@ class Department(Base):
     updated_at = Column(DateTime, default=datetime.now)
 
     position = relationship('Position', back_populates='department')
+    user = relationship('User', back_populates='department')
 
 
 class Position(Base):
@@ -23,3 +24,29 @@ class Position(Base):
     updated_at = Column(DateTime, default=datetime.now)
 
     department = relationship('Department', back_populates='position')
+    user = relationship('User', back_populates='position')
+    
+    
+    
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    role = Column(String, nullable=False)
+    staff_id = Column(String, nullable=False)
+    department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'))
+    position_id  = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'))
+    is_deleted = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
+    
+    department = relationship('Department', back_populates='user')
+    position = relationship('Position', back_populates='user')
+    
+    
+class Category(Base):
+    __tablename__ = 'category'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
