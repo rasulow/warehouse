@@ -50,3 +50,23 @@ class Category(Base):
     name = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
+    
+    item = relationship('Item', back_populates='category')
+    
+    
+class Item(Base):
+    __tablename__ = 'item'
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False)
+    material_number = Column(String, nullable=False)
+    vendor = Column(String, nullable=False)
+    bin_location = Column(String, nullable=False)
+    note = Column(String, nullable=False)
+    is_retrieved = Column(Boolean, nullable=False, default=False)
+    category_id = Column(ForeignKey('category.id', ondelete='CASCADE'))
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
+    
+    category = relationship('Category', back_populates='item')

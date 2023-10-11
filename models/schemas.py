@@ -54,3 +54,33 @@ class UserSchema(BaseSchema):
     
 class UserIsDeletedSchema(BaseModel):
     is_deleted: bool
+    
+    
+class ItemSchema(BaseModel):
+    title : str 
+    quantity : int 
+    price : float 
+    material_number : str 
+    vendor : str 
+    bin_location : str 
+    note : str 
+    is_retrieved : bool = False 
+    category_id : int
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    'title': 'Standart list A4',
+                    'quantity': 100, 
+                    'price': 90.50, 
+                    'material_number': 'f5d3s2a1',
+                    'vendor': 'Снегурочка',
+                    'bin_location': 'C5-G7',
+                    'note': 'Her bir list korobkalayyn gelman, packalayyn geldi', 
+                    'is_retrieved': False, 
+                    'category_id': 1
+                }
+            ]
+        }
+    }

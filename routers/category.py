@@ -17,7 +17,7 @@ async def get_category(
     try:
         result = await crud.category.read(db)
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -34,7 +34,7 @@ async def create_category(
     try:
         result = await crud.category.create(req, db)
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -52,7 +52,7 @@ async def update_category(
     try:
         result = await crud.category.update(id, req, db)
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -69,7 +69,7 @@ async def delete_category(
     try:
         result = await crud.category.delete(id, db)
     except Exception as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
