@@ -1,1 +1,1 @@
-from services import department, position, user, category, item
+from services import department, position, user, category, item, image

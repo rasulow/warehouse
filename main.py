@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Response
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from core import Base, engine, SessionLocal
 import routers
 
@@ -34,6 +35,7 @@ app.add_middleware(
     allow_headers=headers,
 )
 
+app.mount('/uploads', StaticFiles(directory="uploads"), name="uploads")
 Base.metadata.create_all(engine)
 
 app.include_router(routers.department_router)
@@ -41,6 +43,7 @@ app.include_router(routers.position_router)
 app.include_router(routers.user_router)
 app.include_router(routers.category_router)
 app.include_router(routers.item_router)
+app.include_router(routers.image_router)
 
 if __name__ == '__main__':
     import uvicorn

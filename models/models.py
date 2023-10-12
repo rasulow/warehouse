@@ -70,3 +70,15 @@ class Item(Base):
     updated_at = Column(DateTime, default=datetime.now)
     
     category = relationship('Category', back_populates='item')
+    image = relationship('Image', back_populates='item')
+    
+    
+class Image(Base):
+    __tablename__ = 'image'
+    id = Column(Integer, primary_key=True, index=True)
+    src = Column(String, nullable=False)
+    item_id = Column(Integer, ForeignKey('item.id', ondelete='CASCADE'))
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
+    
+    item = relationship('Item', back_populates='image')

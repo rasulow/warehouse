@@ -15,6 +15,14 @@ async def read(is_retrieved: bool, db: Session):
                     _mod.Category.name
                 )
             )
+        )\
+        .options(
+            joinedload(_mod.Item.image)\
+            .options(
+                load_only(
+                    _mod.Image.src
+                )
+            )
         )
     if is_retrieved is not None:
         result = result.filter(_mod.Item.is_retrieved == is_retrieved)
