@@ -13,6 +13,7 @@ class Department(Base):
 
     position = relationship('Position', back_populates='department')
     user = relationship('User', back_populates='department')
+    request = relationship('Request', back_populates='department')
 
 
 class Position(Base):
@@ -25,6 +26,7 @@ class Position(Base):
 
     department = relationship('Department', back_populates='position')
     user = relationship('User', back_populates='position')
+    request = relationship('Request', back_populates='position')
     
     
     
@@ -42,6 +44,7 @@ class User(Base):
     
     department = relationship('Department', back_populates='user')
     position = relationship('Position', back_populates='user')
+    request = relationship('Request', back_populates='user')
     
     
 class Category(Base):
@@ -71,6 +74,7 @@ class Item(Base):
     
     category = relationship('Category', back_populates='item')
     image = relationship('Image', back_populates='item')
+    request = relationship('Request', back_populates='item')
     
     
 class Image(Base):
@@ -82,3 +86,23 @@ class Image(Base):
     updated_at = Column(DateTime, default=datetime.now)
     
     item = relationship('Item', back_populates='image')
+    
+    
+    
+class Request(Base):
+    __tablename__ = 'request'
+    id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, ForeignKey('item.id', ondelete='CASCADE'))
+    department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'))
+    position_id = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'))
+    user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'))
+    req_quantity = Column(Integer, nullable=False)
+    req_date = Column(Date, nullable=False)
+    status = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
+    
+    item = relationship('Item', back_populates='request')
+    department = relationship('Department', back_populates='request')
+    position = relationship('Position', back_populates='request')
+    user = relationship('User', back_populates='request')

@@ -4,3 +4,4 @@ from routers.user import router as user_router
 from routers.category import router as category_router
 from routers.item import router as item_router
 from routers.image import router as image_router
+from routers.request import router as request_router

@@ -44,8 +44,9 @@ app.include_router(routers.user_router)
 app.include_router(routers.category_router)
 app.include_router(routers.item_router)
 app.include_router(routers.image_router)
+app.include_router(routers.request_router)
 
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run("main:app", host='127.0.0.1', port=8000, reload=True)
+    uvicorn.run("main:app", host='0.0.0.0', port=5050, reload=True)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-
+from datetime import date
 
 class BaseSchema(BaseModel):
     name: str
@@ -80,6 +80,30 @@ class ItemSchema(BaseModel):
                     'note': 'Her bir list korobkalayyn gelman, packalayyn geldi', 
                     'is_retrieved': False, 
                     'category_id': 1
+                }
+            ]
+        }
+    }
+    
+    
+class RequestSchema(BaseModel):
+    item_id: int
+    department_id: int
+    position_id: int
+    user_id: int
+    req_quantity: int
+    req_date: date
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    'item_id': 12,
+                    'department_id': 3, 
+                    'position_id': 7, 
+                    'user_id': 1,
+                    'req_quantity': 45,
+                    'req_date': '2023-10-12',
                 }
             ]
         }
