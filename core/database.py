@@ -1,13 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-dbtype   = "postgresql"
-user     = "postgres"
-password = "arslan183139"
-host     = "127.0.0.1"
-port     = "5432"
-db       = "warehouse"
+load_dotenv()
+
+dbtype   = os.getenv('DB_TYPE')
+user     = os.getenv('USER')
+password = os.getenv('PASSWORD')
+host     = os.getenv('HOST')
+port     = os.getenv('PORT')
+db       = os.getenv('DB_NAME')
 
 SQLALCHEMY_DATABASE_URL = f"{ dbtype }://{ user }:{ password }@{ host }:{ port }/{ db }"
 

@@ -12,12 +12,12 @@ router = APIRouter(
 )
 
 
-@router.get('/')
+@router.get('/', status_code=status.HTTP_200_OK)
 async def get_request(
-    status: bool = None,
+    st: bool = None,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.read(status, db)
+        result = await crud.request.read(st, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -29,7 +29,7 @@ async def get_request(
     )
 
 
-@router.post('/')
+@router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_request(
     req: _mod.RequestSchema,
     db: Session = Depends(get_db)):
