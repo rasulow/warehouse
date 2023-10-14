@@ -33,7 +33,8 @@ class Position(Base):
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=False)
     role = Column(String, nullable=False)
     staff_id = Column(String, nullable=False)
     department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'))
@@ -93,9 +94,9 @@ class Request(Base):
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True, index=True)
     item_id = Column(Integer, ForeignKey('item.id', ondelete='CASCADE'))
-    department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'))
-    position_id = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'))
-    user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'))
+    department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'), default=3)
+    position_id = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'), default=7)
+    user_id = Column(Integer, ForeignKey('user.id', ondelete='CASCADE'), default=1)
     req_quantity = Column(Integer, nullable=False)
     req_date = Column(Date, nullable=False)
     status = Column(Boolean, default=False)
@@ -106,3 +107,17 @@ class Request(Base):
     department = relationship('Department', back_populates='request')
     position = relationship('Position', back_populates='request')
     user = relationship('User', back_populates='request')
+    response = relationship('Response', back_populates='request')
+    
+    
+class Response(Base):
+    __tablename__ = 'response'
+    id = Column(Integer, primary_key=True, index=True)
+    request_id = Column(Integer, ForeignKey('request.id', ondelete='CASCADE'), nullable=False)
+    status = Column(Integer, nullable=False)
+    description = Column(String)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now)
+    
+    request = relationship('Request', back_populates='response')
+    

@@ -9,7 +9,7 @@ async def read(is_deleted, db: Session):
         .options(
             load_only(
                 _mod.User.id,
-                _mod.User.name,
+                _mod.User.username,
                 _mod.User.staff_id,
                 _mod.User.role,
                 _mod.User.is_deleted
@@ -42,7 +42,14 @@ async def read(is_deleted, db: Session):
     
     
 async def create(req: _mod.UserSchema, db: Session):
-    new_add = _mod.User(**req.dict())
+    new_add = _mod.User(
+        username = req.username,
+        hashed_password = req.password,
+        role = req.role,
+        staff_id = req.staff_id,
+        department_id = req.department_id,
+        position_id = req.position_id
+    )
     db.add(new_add)
     db.commit()
     db.refresh(new_add)

@@ -7,17 +7,17 @@ import services as crud
 
 
 router = APIRouter(
-    prefix='/request',
-    tags=['Request']
+    prefix='/response',
+    tags=['Response']
 )
 
 
 @router.get('/', status_code=status.HTTP_200_OK)
-async def get_request(
-    st: bool = None,
+async def read_response(
+    st: int = None,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.read(st, db)
+        result = await crud.response.read(st, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -30,11 +30,11 @@ async def get_request(
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
-async def create_request(
-    req: _mod.RequestSchema,
+async def create_response(
+    req: _mod.ResponseSchema,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.create(req, db)
+        result = await crud.response.create(req, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -47,11 +47,11 @@ async def create_request(
     
     
 @router.get('/{id}/', status_code=status.HTTP_200_OK)
-async def read_request_by_id(
+async def get_response_by_id(
     id: int,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.read_by_id(id, db)
+        result = await crud.response.read_by_id(id, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -61,15 +61,15 @@ async def read_request_by_id(
     return Response.read(
         data=result
     )
-    
-    
+
+
 @router.put('/{id}/', status_code=status.HTTP_200_OK)
-async def update_request(
+async def update_response(
     id: int,
-    req: _mod.RequestSchema,
+    req: _mod.ResponseSchema,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.update(id, req, db)
+        result = await crud.response.update(id, req, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
@@ -79,14 +79,31 @@ async def update_request(
     return Response.updated(
         updated_id=result
     )
-    
-    
-@router.delete('/{id}/', status_code=status.HTTP_200_OK)
-async def delete_request(
-    id: int, 
+
+
+@router.patch('/{id}/', status_code=status.HTTP_200_OK)
+async def update_response_status(
+    id: int,
+    req: _mod.ResponseStatusSchema,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.request.delete(id, db)
+        result = await crud.response.update_status(id, req, db)
+    except Exception as e:
+        return HTTPException(
+            status_code=status.HTTP_204_NO_CONTENT,
+            detail=e
+        )
+
+    return Response.updated(
+        updated_id=result
+    )
+
+@router.delete('/{id}/', status_code=status.HTTP_200_OK)
+async def delete_response(
+    id: int,
+    db: Session = Depends(get_db)):
+    try:
+        result = await crud.response.delete(id, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,

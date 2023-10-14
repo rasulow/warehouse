@@ -31,7 +31,9 @@ class PositionSchema(BaseSchema):
     }
     
     
-class UserSchema(BaseSchema):
+class UserSchema(BaseModel):
+    username: str
+    password: str
     role: str
     staff_id: int
     department_id: int
@@ -41,7 +43,8 @@ class UserSchema(BaseSchema):
         "json_schema_extra": {
             "examples": [
                 {
-                    'name': 'Kakageldiyew Myratgeldi',
+                    'username': 'Kakageldiyew Myratgeldi',
+                    'password': 'demo',
                     'department_id': 1,
                     'position_id': 1,
                     'role': 'user',
@@ -88,9 +91,9 @@ class ItemSchema(BaseModel):
     
 class RequestSchema(BaseModel):
     item_id: int
-    department_id: int
-    position_id: int
-    user_id: int
+    # department_id: int
+    # position_id: int
+    # user_id: int
     req_quantity: int
     req_date: date
     
@@ -99,12 +102,34 @@ class RequestSchema(BaseModel):
             "examples": [
                 {
                     'item_id': 12,
-                    'department_id': 3, 
-                    'position_id': 7, 
-                    'user_id': 1,
+                    # 'department_id': 3, 
+                    # 'position_id': 7, 
+                    # 'user_id': 1,
                     'req_quantity': 45,
                     'req_date': '2023-10-12',
                 }
             ]
         }
     }
+    
+    
+class ResponseSchema(BaseModel):
+    request_id: int
+    status: int
+    description: str
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    'request_id': 1,
+                    'status': 0,
+                    'description': 'Some description here!!!'
+                }
+            ]
+        }
+    }
+    
+    
+class ResponseStatusSchema(BaseModel):
+    status: int

@@ -3,9 +3,9 @@ from sqlalchemy import desc
 import models as _mod
 from fastapi.encoders import jsonable_encoder
 
-
-
+    
 async def read(is_retrieved: bool, db: Session):
+    
     result = db.query(_mod.Item)\
         .options(
             joinedload(_mod.Item.category)\
@@ -35,20 +35,30 @@ async def read(is_retrieved: bool, db: Session):
     
     
 async def read_by_id(id: int, db: Session):
-    return jsonable_encoder(
-        db.query(_mod.Item)
+    result = db.query(_mod.Item)\
         .options(
-            joinedload(_mod.Item.category)
+            joinedload(_mod.Item.category)\
             .options(
                 load_only(
                     _mod.Category.id,
                     _mod.Category.name
                 )
             )
-        )
-        .filter(_mod.Item.id == id)
+        )\
+        .options(
+            joinedload(_mod.Item.image)\
+            .options(
+                load_only(
+                    _mod.Image.src
+                )
+            )
+        )\
+        .filter(_mod.Item.id == id)\
         .first()
-    )
+        
+    
+    return jsonable_encoder(result)
+        
     
 async def create(req: _mod.ItemSchema, db: Session):
     new_add = _mod.Item(**req.dict())

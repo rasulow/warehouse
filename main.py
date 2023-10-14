@@ -45,6 +45,7 @@ app.include_router(routers.category_router)
 app.include_router(routers.item_router)
 app.include_router(routers.image_router)
 app.include_router(routers.request_router)
+app.include_router(routers.response_router)
 
 if __name__ == '__main__':
     import uvicorn

@@ -3,13 +3,23 @@ from sqlalchemy.orm import Session
 from core import get_db, Response
 import models as _mod
 import services as crud
+from functools import wraps
 
 router = APIRouter(
     prefix='/user',
     tags=['User']
 )
 
+
+# def decorator(func):
+#     @wraps(func)
+#     async def wrapper(*args, **kwargs):
+#         print('Hello')
+#         return await func(*args, **kwargs)
+#     return wrapper
+
 @router.get('/', status_code=status.HTTP_200_OK)
+# @decorator
 async def get_user(
     is_deleted: bool = None,
     db: Session = Depends(get_db)):
