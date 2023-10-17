@@ -4,7 +4,7 @@ import models as _mod
 from fastapi.encoders import jsonable_encoder
 
     
-async def read(is_retrieved: bool, db: Session):
+async def read(category_id, is_retrieved: bool, db: Session):
     
     result = db.query(_mod.Item)\
         .options(
@@ -24,6 +24,9 @@ async def read(is_retrieved: bool, db: Session):
                 )
             )
         )
+        
+    if category_id is not None:
+        result = result.filter(_mod.Item.category_id == category_id)
     if is_retrieved is not None:
         result = result.filter(_mod.Item.is_retrieved == is_retrieved)
     result = result.order_by(desc(_mod.Item.id)).all()

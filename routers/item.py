@@ -11,10 +11,11 @@ router = APIRouter(
 
 @router.get('/', status_code=status.HTTP_200_OK)
 async def get_item(
+    category_id: int = None,
     is_retrieved: bool = None,
     db: Session = Depends(get_db)):
     try:
-        result = await crud.item.read(is_retrieved, db)
+        result = await crud.item.read(category_id, is_retrieved, db)
     except Exception as e:
         return HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
