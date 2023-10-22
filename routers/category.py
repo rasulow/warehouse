@@ -27,6 +27,22 @@ async def get_category(
     )
     
     
+@router.get('/item/', status_code=status.HTTP_200_OK)
+async def get_category_by_item(
+    db: Session = Depends(get_db)):
+    try:
+        result = await crud.category.read_by_item(db)
+    except Exception as e:
+        return HTTPException(
+            status_code=status.HTTP_204_NO_CONTENT,
+            detail=e
+        )
+
+    return Response.read(
+        data=result
+    )
+    
+    
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def create_category(
     req: _mod.BaseSchema,

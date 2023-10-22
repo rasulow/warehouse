@@ -63,7 +63,7 @@ class Item(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
-    price = Column(Float, nullable=False)
+    price = Column(Float, default=None, nullable=True)
     material_number = Column(String, nullable=False)
     vendor = Column(String, nullable=False)
     bin_location = Column(String, nullable=False)
@@ -107,7 +107,7 @@ class Request(Base):
     department = relationship('Department', back_populates='request')
     position = relationship('Position', back_populates='request')
     user = relationship('User', back_populates='request')
-    response = relationship('Response', back_populates='request')
+    response = relationship('Response', uselist=False, back_populates='request')
     
     
 class Response(Base):

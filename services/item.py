@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session, joinedload, load_only
-from sqlalchemy import desc
+from sqlalchemy import desc, or_, func
 import models as _mod
 from fastapi.encoders import jsonable_encoder
 
     
-async def read(category_id, is_retrieved: bool, db: Session):
+async def read(q, category_id, is_retrieved: bool, db: Session):
     
     result = db.query(_mod.Item)\
         .options(
@@ -25,6 +25,16 @@ async def read(category_id, is_retrieved: bool, db: Session):
             )
         )
         
+    
+    if q is not None:
+        q = q.lower()
+        result = result.filter(
+            or_(
+                func.lower(_mod.Item.title).like(f"%{q}%"),
+                func.lower(_mod.Item.material_number).like(f"%{q}%"),
+                func.lower(_mod.Item.vendor).like(f"%{q}%")
+            )
+        )
     if category_id is not None:
         result = result.filter(_mod.Item.category_id == category_id)
     if is_retrieved is not None:
@@ -77,7 +87,6 @@ async def update(id: int, req: _mod.ItemSchema, db: Session):
         .update({
             _mod.Item.title: req.title,
             _mod.Item.quantity: req.quantity, 
-            _mod.Item.price: req.price, 
             _mod.Item.material_number: req.material_number,  
             _mod.Item.vendor: req.vendor,
             _mod.Item.bin_location: req.bin_location,

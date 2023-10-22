@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import desc
 import models as _mod
 from fastapi.encoders import jsonable_encoder
@@ -10,11 +10,25 @@ async def read(db: Session):
         .order_by(desc(_mod.Category.id))
         .all()
     )
+
+
+async def read_by_item(db: Session):
+    return jsonable_encoder(
+        db.query(_mod.Category)\
+            .options(
+                joinedload(_mod.Category.item)\
+                    .options(
+                        joinedload(_mod.Item.image)
+                    )
+            )
+        .order_by(desc(_mod.Category.id))
+        .all()
+    )
     
     
 async def create(req: _mod.BaseSchema, db: Session):
     new_add = _mod.Category(**req.dict())
-    db.add(new_add)
+    db.add(new_add) 
     db.commit()
     db.refresh(new_add)
     return jsonable_encoder(new_add)

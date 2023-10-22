@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, joinedload, load_only
-from sqlalchemy import desc
+from sqlalchemy import desc, asc
 import models as _mod
 from fastapi.encoders import jsonable_encoder
 
@@ -7,7 +7,7 @@ from fastapi.encoders import jsonable_encoder
 async def read(status, db: Session):
     result = db.query(_mod.Request)\
         .options(
-            load_only(
+            load_only( 
                 _mod.Request.req_quantity,
                 _mod.Request.req_date,
                 _mod.Request.status
@@ -25,39 +25,8 @@ async def read(status, db: Session):
                         _mod.Item.bin_location,
                         _mod.Item.note,
                         _mod.Item.is_retrieved,
-                    )
-                )
-        )\
-        .options(
-            joinedload(
-                _mod.Request.department
-            )\
-                .options(
-                    load_only(
-                        _mod.Department.name
-                    )
-                )
-        )\
-        .options(
-            joinedload(
-                _mod.Request.position
-            )\
-                .options(
-                    load_only(
-                        _mod.Position.name
-                    )
-                )
-        )\
-        .options(
-            joinedload(
-                _mod.Request.user
-            )\
-                .options(
-                    load_only(
-                        _mod.User.username,
-                        _mod.User.staff_id,
-                        _mod.User.role
-                    )
+                    ),
+                    joinedload(_mod.Item.image)
                 )
         )\
         .options(

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List
 from datetime import date
+from typing import Optional
 
 class BaseSchema(BaseModel):
     name: str
@@ -35,6 +36,7 @@ class UserSchema(BaseModel):
     username: str
     password: str
     role: str
+    price: float | None = None
     staff_id: int
     department_id: int
     position_id: int
@@ -62,7 +64,6 @@ class UserIsDeletedSchema(BaseModel):
 class ItemSchema(BaseModel):
     title : str 
     quantity : int 
-    price : float 
     material_number : str 
     vendor : str 
     bin_location : str 
@@ -76,7 +77,6 @@ class ItemSchema(BaseModel):
                 {
                     'title': 'Standart list A4',
                     'quantity': 100, 
-                    'price': 90.50, 
                     'material_number': 'f5d3s2a1',
                     'vendor': 'Снегурочка',
                     'bin_location': 'C5-G7',
@@ -123,7 +123,7 @@ class ResponseSchema(BaseModel):
             "examples": [
                 {
                     'request_id': 1,
-                    'status': 0,
+                    'status': 1,
                     'description': 'Some description here!!!'
                 }
             ]
