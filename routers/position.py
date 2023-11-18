@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from core import get_db, Response
+from core import get_db, Response, admin_rbac, user_dependency
 import models as _mod
 import services as crud
 
@@ -11,8 +10,10 @@ router = APIRouter(
 )
 
 
-@router.get('/', status_code=status.HTTP_200_OK)
+@router.get('/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def get_position(
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.position.read(db)
@@ -27,8 +28,10 @@ async def get_position(
     )
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', status_code=status.HTTP_201_CREATED, summary='ADMIN')
+@admin_rbac
 async def create_position(
+        user: user_dependency,
         req: _mod.PositionSchema,
         db: Session = Depends(get_db)):
     try:
@@ -44,10 +47,11 @@ async def create_position(
     )
 
 
-
-@router.get('/{id}/', status_code=status.HTTP_200_OK)
+@router.get('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def get_current_position(
         id: int,
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.position.read_by_id(id, db)
@@ -62,9 +66,11 @@ async def get_current_position(
     )
 
 
-@router.put('/{id}/', status_code=status.HTTP_200_OK)
+@router.put('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def update_position(
         id: int,
+        user: user_dependency,
         req: _mod.PositionSchema,
         db: Session = Depends(get_db)):
     try:
@@ -80,9 +86,11 @@ async def update_position(
     )
 
 
-@router.delete('/{id}/', status_code=status.HTTP_200_OK)
+@router.delete('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def delete_position(
         id: int,
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.position.delete(id, db)

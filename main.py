@@ -1,14 +1,16 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from core import Base, engine, SessionLocal
+from core import Base, engine, SessionLocal, auth_router
 import routers
 
 app = FastAPI(
     swagger_ui_parameters={
         "syntaxHighlight": False
-    }
+    },
+    title='Warehouse'
 )
 
 
@@ -26,7 +28,6 @@ async def db_session_middleware(request: Request, call_next):
 origins = ["*"]
 methods = ["*"]
 headers = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -38,6 +39,7 @@ app.add_middleware(
 app.mount('/uploads', StaticFiles(directory="uploads"), name="uploads")
 Base.metadata.create_all(engine)
 
+app.include_router(auth_router)
 app.include_router(routers.department_router)
 app.include_router(routers.position_router)
 app.include_router(routers.user_router)

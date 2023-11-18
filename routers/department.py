@@ -1,17 +1,20 @@
 from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
-from core import get_db, Response
+from core import get_db, Response, admin_rbac, user_dependency
 import models as _mod
 import services as crud
 
 router = APIRouter(
     prefix='/department',
-    tags=['Department']
+    tags=['Department'],
 )
 
 
-@router.get('/', status_code=status.HTTP_200_OK)
+@router.get('/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def get_department(
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.department.read(db)
@@ -26,9 +29,11 @@ async def get_department(
     )
 
 
-@router.get('/{id}/', status_code=status.HTTP_200_OK)
+@router.get('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def get_current_department(
         id: int,
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.department.read_by_id(id, db)
@@ -43,8 +48,10 @@ async def get_current_department(
     )
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', status_code=status.HTTP_201_CREATED, summary='ADMIN')
+@admin_rbac
 async def create_department(
+        user: user_dependency,
         req: _mod.BaseSchema,
         db: Session = Depends(get_db)):
     try:
@@ -60,9 +67,11 @@ async def create_department(
     )
 
 
-@router.put('/{id}/', status_code=status.HTTP_200_OK)
+@router.put('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def update_department(
         id: int,
+        user: user_dependency,
         req: _mod.BaseSchema,
         db: Session = Depends(get_db)):
     try:
@@ -78,9 +87,11 @@ async def update_department(
     )
 
 
-@router.delete('/{id}/', status_code=status.HTTP_200_OK)
+@router.delete('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
+@admin_rbac
 async def delete_department(
         id: int,
+        user: user_dependency,
         db: Session = Depends(get_db)):
     try:
         result = await crud.department.delete(id, db)

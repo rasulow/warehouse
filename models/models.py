@@ -27,9 +27,8 @@ class Position(Base):
     department = relationship('Department', back_populates='position')
     user = relationship('User', back_populates='position')
     request = relationship('Request', back_populates='position')
-    
-    
-    
+
+
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True, index=True)
@@ -38,26 +37,26 @@ class User(Base):
     role = Column(String, nullable=False)
     staff_id = Column(String, nullable=False)
     department_id = Column(Integer, ForeignKey('department.id', ondelete='CASCADE'))
-    position_id  = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'))
+    position_id = Column(Integer, ForeignKey('position.id', ondelete='CASCADE'))
     is_deleted = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     department = relationship('Department', back_populates='user')
     position = relationship('Position', back_populates='user')
     request = relationship('Request', back_populates='user')
-    
-    
+
+
 class Category(Base):
     __tablename__ = 'category'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     item = relationship('Item', back_populates='category')
-    
-    
+
+
 class Item(Base):
     __tablename__ = 'item'
     id = Column(Integer, primary_key=True, index=True)
@@ -72,12 +71,12 @@ class Item(Base):
     category_id = Column(ForeignKey('category.id', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     category = relationship('Category', back_populates='item')
     image = relationship('Image', back_populates='item')
     request = relationship('Request', back_populates='item')
-    
-    
+
+
 class Image(Base):
     __tablename__ = 'image'
     id = Column(Integer, primary_key=True, index=True)
@@ -85,11 +84,10 @@ class Image(Base):
     item_id = Column(Integer, ForeignKey('item.id', ondelete='CASCADE'))
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     item = relationship('Item', back_populates='image')
-    
-    
-    
+
+
 class Request(Base):
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True, index=True)
@@ -102,14 +100,14 @@ class Request(Base):
     status = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     item = relationship('Item', back_populates='request')
     department = relationship('Department', back_populates='request')
     position = relationship('Position', back_populates='request')
     user = relationship('User', back_populates='request')
     response = relationship('Response', uselist=False, back_populates='request')
-    
-    
+
+
 class Response(Base):
     __tablename__ = 'response'
     id = Column(Integer, primary_key=True, index=True)
@@ -118,6 +116,5 @@ class Response(Base):
     description = Column(String)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
-    
+
     request = relationship('Request', back_populates='response')
-    

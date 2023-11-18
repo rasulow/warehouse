@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-dbtype   = os.getenv('DB_TYPE')
-user     = os.getenv('USER')
+dbtype = os.getenv('DB_TYPE')
+user = os.getenv('USER')
 password = os.getenv('PASSWORD')
-host     = os.getenv('HOST')
-port     = os.getenv('PORT')
-db       = os.getenv('DB_NAME')
+host = os.getenv('HOST')
+port = os.getenv('PORT')
+db = os.getenv('DB_NAME')
 
-SQLALCHEMY_DATABASE_URL = f"{ dbtype }://{ user }:{ password }@{ host }:{ port }/{ db }"
+SQLALCHEMY_DATABASE_URL = f"{dbtype}://{user}:{password}@{host}:{port}/{db}"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

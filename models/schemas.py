@@ -36,7 +36,6 @@ class UserSchema(BaseModel):
     username: str
     password: str
     role: str
-    price: float | None = None
     staff_id: int
     department_id: int
     position_id: int
@@ -91,9 +90,6 @@ class ItemSchema(BaseModel):
     
 class RequestSchema(BaseModel):
     item_id: int
-    # department_id: int
-    # position_id: int
-    # user_id: int
     req_quantity: int
     req_date: date
     
