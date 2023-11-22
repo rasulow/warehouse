@@ -10,7 +10,7 @@ app = FastAPI(
     swagger_ui_parameters={
         "syntaxHighlight": False
     },
-    title='Warehouse'
+    title='HAZO'
 )
 
 

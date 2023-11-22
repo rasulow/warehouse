@@ -11,6 +11,7 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
+from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(
     prefix='/auth',
@@ -68,9 +69,9 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Could not validate user.')
-    token = create_access_token(user, timedelta(minutes=20))
-
-    return {'access_token': token, 'token_type': 'bearer'}
+    token = create_access_token(user, timedelta(seconds=30))
+    print(user.role)
+    return {'access_token': token, 'token_type': 'bearer', 'role': user.role}
 
 
 def authenticate_user(username: str, password: str, db):
