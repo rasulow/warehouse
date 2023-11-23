@@ -20,7 +20,7 @@ async def get_item(
     try:
         result = await crud.item.read(q, category_id, is_retrieved, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -39,7 +39,7 @@ async def create_item(
     try:
         result = await crud.item.create(req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -57,7 +57,7 @@ async def get_item_by_id(
     try:
         result = await crud.item.read_by_id(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -77,7 +77,7 @@ async def update_item(
     try:
         result = await crud.item.update(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -96,7 +96,7 @@ async def delete_item(
     try:
         result = await crud.item.delete(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )

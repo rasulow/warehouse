@@ -18,7 +18,7 @@ async def get_position(
     try:
         result = await crud.position.read(db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -37,7 +37,7 @@ async def create_position(
     try:
         result = await crud.position.create(req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -56,7 +56,7 @@ async def get_current_position(
     try:
         result = await crud.position.read_by_id(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -76,7 +76,7 @@ async def update_position(
     try:
         result = await crud.position.update(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -95,7 +95,7 @@ async def delete_position(
     try:
         result = await crud.position.delete(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )

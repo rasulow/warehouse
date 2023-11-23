@@ -19,7 +19,7 @@ async def get_department(
     try:
         result = await crud.department.read(db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -38,7 +38,7 @@ async def get_current_department(
     try:
         result = await crud.department.read_by_id(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -57,7 +57,7 @@ async def create_department(
     try:
         result = await crud.department.create(req=req, db=db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=e
         )
@@ -77,7 +77,7 @@ async def update_department(
     try:
         result = await crud.department.update(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=e
         )
@@ -96,7 +96,7 @@ async def delete_department(
     try:
         result = await crud.department.delete(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=e
         )

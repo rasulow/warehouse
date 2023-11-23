@@ -19,7 +19,7 @@ async def get_request(
     try:
         result = await crud.request.read(st, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -37,7 +37,7 @@ async def get_request(
     try:
         result = await crud.request.read_by_user_id(user['id'], db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -71,7 +71,7 @@ async def read_request_by_id(
     try:
         result = await crud.request.read_by_id(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -91,7 +91,7 @@ async def update_request(
     try:
         result = await crud.request.update(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -110,7 +110,7 @@ async def delete_request(
     try:
         result = await crud.request.delete(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )

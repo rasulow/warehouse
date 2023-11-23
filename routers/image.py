@@ -20,7 +20,7 @@ async def create_image(
     try:
         result = await crud.image.create(id, files, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )

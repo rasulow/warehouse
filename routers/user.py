@@ -19,7 +19,7 @@ async def get_user(
     try:
         result = await crud.user.read(is_deleted, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -38,7 +38,7 @@ async def get_current_user(
     try:
         result = await crud.user.read_by_id(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -58,7 +58,7 @@ async def update_user(
     try:
         result = await crud.user.update(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -78,7 +78,7 @@ async def update_user_is_deleted(
     try:
         result = await crud.user.update_is_deleted(id, req, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
@@ -97,7 +97,7 @@ async def delete_user(
     try:
         result = await crud.user.delete(id, db)
     except Exception as e:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
             detail=e
         )
