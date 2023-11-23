@@ -17,7 +17,6 @@ def user_rbac(func):
 def admin_rbac(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
-        print(kwargs['user']['role'])
         if kwargs['user']['role'] == 'user':
             raise HTTPException(status_code=401, detail='This api gives access only admin privileges')
         return await func(*args, **kwargs)

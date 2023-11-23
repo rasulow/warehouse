@@ -91,8 +91,8 @@ def create_access_token(user, expires_delta: timedelta):
         'position_id': user.position_id,
         'role': user.role
     }
-    expires = datetime.utcnow() + expires_delta
-    encode.update({'exp': expires})
+    # expires = datetime.utcnow() + expires_delta
+    # encode.update({'exp': expires})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
