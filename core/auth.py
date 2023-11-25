@@ -11,7 +11,7 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
-from fastapi.encoders import jsonable_encoder
+from core import admin_rbac, user_dependency
 
 router = APIRouter(
     prefix='/auth',
@@ -45,8 +45,10 @@ class Token(BaseModel):
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
-@router.post('/', status_code=status.HTTP_201_CREATED)
+@router.post('/', status_code=status.HTTP_201_CREATED, summary='ADMIN')
+@admin_rbac
 async def create_user(db: db_dependency,
+                      user: user_dependency,
                       create_user_request: CreateUserRequest):
     create_user_model = User(
         username=create_user_request.username,
