@@ -39,6 +39,7 @@ class CreateUserRequest(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    role: str
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
@@ -70,7 +71,6 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Could not validate user.')
     token = create_access_token(user, timedelta(seconds=30))
-    print(user.role)
     return {'access_token': token, 'token_type': 'bearer', 'role': user.role}
 
 
