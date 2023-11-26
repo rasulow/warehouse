@@ -3,6 +3,7 @@ from typing import List
 from datetime import date
 from typing import Optional
 
+
 class BaseSchema(BaseModel):
     name: str
 
@@ -30,8 +31,8 @@ class PositionSchema(BaseSchema):
             ]
         }
     }
-    
-    
+
+
 class UserSchema(BaseModel):
     username: str
     password: str
@@ -39,7 +40,7 @@ class UserSchema(BaseModel):
     staff_id: int
     department_id: int
     position_id: int
-    
+
     model_config = {
         "json_schema_extra": {
             "examples": [
@@ -54,45 +55,47 @@ class UserSchema(BaseModel):
             ]
         }
     }
-    
-    
+
+
 class UserIsDeletedSchema(BaseModel):
     is_deleted: bool
-    
-    
+
+
 class ItemSchema(BaseModel):
-    title : str 
-    quantity : int 
-    material_number : str 
-    vendor : str 
-    bin_location : str 
-    note : str 
-    is_retrieved : bool = False 
-    category_id : int
-    
+    title: str
+    quantity: int
+    material_number: str
+    vendor: str
+    bin_location: str
+    note: str
+    price: float = None
+    is_retrieved: bool = False
+    category_id: int
+
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
                     'title': 'Standart list A4',
-                    'quantity': 100, 
+                    'quantity': 100,
                     'material_number': 'f5d3s2a1',
                     'vendor': 'Снегурочка',
                     'bin_location': 'C5-G7',
-                    'note': 'Her bir list korobkalayyn gelman, packalayyn geldi', 
-                    'is_retrieved': False, 
+                    'price': 1.5,
+                    'note': 'Her bir list korobkalayyn gelman, packalayyn geldi',
+                    'is_retrieved': False,
                     'category_id': 1
                 }
             ]
         }
     }
-    
-    
+
+
 class RequestSchema(BaseModel):
     item_id: int
     req_quantity: int
     req_date: date
-    
+
     model_config = {
         "json_schema_extra": {
             "examples": [
@@ -107,13 +110,13 @@ class RequestSchema(BaseModel):
             ]
         }
     }
-    
-    
+
+
 class ResponseSchema(BaseModel):
     request_id: int
     status: int
     description: str
-    
+
     model_config = {
         "json_schema_extra": {
             "examples": [
@@ -125,7 +128,7 @@ class ResponseSchema(BaseModel):
             ]
         }
     }
-    
-    
+
+
 class ResponseStatusSchema(BaseModel):
     status: int
