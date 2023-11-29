@@ -3,29 +3,27 @@ from sqlalchemy import desc, or_, func
 import models as _mod
 from fastapi.encoders import jsonable_encoder
 
-    
+
 async def read(q, category_id, is_retrieved: bool, db: Session):
-    
-    result = db.query(_mod.Item)\
+    result = db.query(_mod.Item) \
         .options(
-            joinedload(_mod.Item.category)\
+        joinedload(_mod.Item.category) \
             .options(
-                load_only(
-                    _mod.Category.id,
-                    _mod.Category.name
-                )
-            )
-        )\
-        .options(
-            joinedload(_mod.Item.image)\
-            .options(
-                load_only(
-                    _mod.Image.src
-                )
+            load_only(
+                _mod.Category.id,
+                _mod.Category.name
             )
         )
-        
-    
+    ) \
+        .options(
+        joinedload(_mod.Item.image) \
+            .options(
+            load_only(
+                _mod.Image.src
+            )
+        )
+    )
+
     if q is not None:
         q = q.lower()
         result = result.filter(
@@ -40,39 +38,38 @@ async def read(q, category_id, is_retrieved: bool, db: Session):
     if is_retrieved is not None:
         result = result.filter(_mod.Item.is_retrieved == is_retrieved)
     result = result.order_by(desc(_mod.Item.id)).all()
-    
+
     return jsonable_encoder(
         result
     )
 
-    
-    
+
 async def read_by_id(id: int, db: Session):
-    result = db.query(_mod.Item)\
+    material_number = str(id)
+    result = db.query(_mod.Item) \
         .options(
-            joinedload(_mod.Item.category)\
+        joinedload(_mod.Item.category) \
             .options(
-                load_only(
-                    _mod.Category.id,
-                    _mod.Category.name
-                )
+            load_only(
+                _mod.Category.id,
+                _mod.Category.name
             )
-        )\
+        )
+    ) \
         .options(
-            joinedload(_mod.Item.image)\
+        joinedload(_mod.Item.image) \
             .options(
-                load_only(
-                    _mod.Image.src
-                )
+            load_only(
+                _mod.Image.src
             )
-        )\
-        .filter(_mod.Item.id == id)\
+        )
+    ) \
+        .filter(or_(_mod.Item.id == id, _mod.Item.material_number == material_number)) \
         .first()
-        
-    
+
     return jsonable_encoder(result)
-        
-    
+
+
 async def create(req: _mod.ItemSchema, db: Session):
     new_add = _mod.Item(**req.dict())
     db.add(new_add)
@@ -82,28 +79,27 @@ async def create(req: _mod.ItemSchema, db: Session):
 
 
 async def update(id: int, req: _mod.ItemSchema, db: Session):
-    new_update = db.query(_mod.Item)\
-        .filter(_mod.Item.id == id)\
+    new_update = db.query(_mod.Item) \
+        .filter(_mod.Item.id == id) \
         .update({
-            _mod.Item.title: req.title,
-            _mod.Item.quantity: req.quantity, 
-            _mod.Item.material_number: req.material_number,  
-            _mod.Item.vendor: req.vendor,
-            _mod.Item.bin_location: req.bin_location,
-            _mod.Item.note: req.note,
-            _mod.Item.is_retrieved: req.is_retrieved,
-            _mod.Item.category_id: req.category_id
-        }, synchronize_session=False)
+        _mod.Item.title: req.title,
+        _mod.Item.quantity: req.quantity,
+        _mod.Item.material_number: req.material_number,
+        _mod.Item.vendor: req.vendor,
+        _mod.Item.bin_location: req.bin_location,
+        _mod.Item.note: req.note,
+        _mod.Item.is_retrieved: req.is_retrieved,
+        _mod.Item.category_id: req.category_id
+    }, synchronize_session=False)
     db.commit()
     return jsonable_encoder(new_update)
 
 
 async def delete(id: int, db: Session):
-    new_delete = db.query(_mod.Item)\
-        .filter(_mod.Item.id == id)\
+    new_delete = db.query(_mod.Item) \
+        .filter(_mod.Item.id == id) \
         .delete(synchronize_session=False)
-    
+
     db.commit()
-    
+
     return jsonable_encoder(new_delete)
-        
