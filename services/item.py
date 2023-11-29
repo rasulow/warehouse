@@ -44,8 +44,7 @@ async def read(q, category_id, is_retrieved: bool, db: Session):
     )
 
 
-async def read_by_id(id: int, db: Session):
-    material_number = str(id)
+async def read_by_id(id: str, db: Session):
     result = db.query(_mod.Item) \
         .options(
         joinedload(_mod.Item.category) \
@@ -64,9 +63,15 @@ async def read_by_id(id: int, db: Session):
             )
         )
     ) \
-        .filter(or_(_mod.Item.id == id, _mod.Item.material_number == material_number)) \
-        .first()
 
+    try:
+        item_id = int(id)
+        material_number = id
+        result = result.filter(or_(_mod.Item.id == item_id, _mod.Item.material_number == material_number))
+    except:
+        result = result.filter(_mod.Item.material_number == id)
+
+    result = result.first()
     return jsonable_encoder(result)
 
 

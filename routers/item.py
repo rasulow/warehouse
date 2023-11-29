@@ -51,7 +51,7 @@ async def create_item(
 
 @router.get('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN and USER')
 async def get_item_by_id(
-        id: int,
+        id: str,
         user: user_dependency,
         db: Session = Depends(get_db)):
     try:
