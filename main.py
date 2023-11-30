@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, Response, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from core import Base, engine, SessionLocal, auth_router
+from paho.mqtt import client as mqtt_client
 import routers
 
 app = FastAPI(
