@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from core import Base, engine, SessionLocal, auth_router
-from paho.mqtt import client as mqtt_client
 import routers
 
 app = FastAPI(
