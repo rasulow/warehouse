@@ -29,14 +29,12 @@ async def get_user(
     )
 
 
-@router.get('/{id}/', status_code=status.HTTP_200_OK, summary='ADMIN')
-@admin_rbac
+@router.get('-details/', status_code=status.HTTP_200_OK, summary='ADMIN and USER')
 async def get_current_user(
-        id: int,
         user: user_dependency,
         db: Session = Depends(get_db)):
     try:
-        result = await crud.user.read_by_id(id, db)
+        result = await crud.user.read_by_id(user['id'], db)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_204_NO_CONTENT,
